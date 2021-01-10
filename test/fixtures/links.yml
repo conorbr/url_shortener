@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  url: 
+  slug: 
+  clicked: 1
+
+two:
+  url: 
+  slug: 
+  clicked: 1
