@@ -1,9 +1,9 @@
 module V1
   class LinksController < ApplicationController
-    before_action :set_link, only: %i[show create update]
+    before_action :set_link, only: %i[show update destroy]
 
     def index
-      @links = Links.all
+      @links = Link.all
       json_response(@links)
     end
 
@@ -14,7 +14,7 @@ module V1
 
     def create
       @link = Link.new(link_params)
-      @link.slug = generate_slug unless link_params[:slug].present?
+      @link.update_attribute(:slug, generate_slug(link_params[:slug]))
 
       json_response(@link) if @link.save
     end
@@ -40,7 +40,12 @@ module V1
 
     def generate_slug(slug_param = nil)
       slug = slug_param || SecureRandom.uuid[0..5]
-      Link.find_by(slug: slug) ? generate_slug : slug
+
+      # if slug is taken add random characters to the end
+      Link.find_by(slug: slug) ? slug.concat(SecureRandom.uuid[0..2]) : slug
+
+      # if slug is still taken call self again
+      Link.find_by(slug: slug) ? generate_slug(slug_param) : slug
     end
   end
 end
