@@ -6,4 +6,8 @@ class Message
   def self.deleted_slug
     'This slug has been deleted'
   end
+
+  def self.deleted_link
+    'Link record deleted successfully'
+  end
 end

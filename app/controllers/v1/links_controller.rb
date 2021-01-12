@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module V1
   class LinksController < ApplicationController
-    before_action :set_link, only: %i[show update destroy]
+    before_action :set_link, only: %i[show update destroy show]
 
     def index
       @links = Link.all
@@ -16,26 +18,31 @@ module V1
       @link = Link.new(link_params)
       @link.update_attribute(:slug, generate_slug(link_params[:slug]))
 
-      json_response(@link) if @link.save
+      return json_response(@link, :created) if @link.save
+
+      json_response({ message: @link.errors.first }, :unprocessable_entity)
     end
 
     def update
+      @link = Link.find(params[:id])
       @link.update(link_params)
     end
 
     def destroy
       @link.destroy
-      json_response({ message: Message.deleted_link }, :deleted)
+      json_response({ message: Message.deleted_link }, :ok)
     end
 
     private
 
     def set_link
-      @link = Link.find_by(slug: link_params[:slug]) || json_response({ message: Message.not_found('link') }, :not_found)
+      @link = link_params[:id] ? Link.find(link_params[:id]) : Link.find_by(slug: link_params[:slug])
+
+      json_response({ message: Message.not_found('link') }, :not_found) unless @link.present?
     end
 
     def link_params
-      params.permit(:slug, :url, :link)
+      params.permit(:slug, :url, :link, :id)
     end
 
     def generate_slug(slug_param = nil)
