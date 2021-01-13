@@ -13,10 +13,10 @@ RSpec.describe 'links API', type: :request do
   describe 'GET /links' do
     # make HTTP get request before each example
     before { get '/links', params: {} }
-
+    # json method is a custom method defined in support/requests_spec_helper.rb
     it 'returns links' do
-      expect(JSON.parse(response.body)).not_to be_empty
-      expect(JSON.parse(response.body).size).to eq(10)
+      expect(json).not_to be_empty
+      expect(json.size).to eq(10)
     end
 
     it 'returns status code 200' do
@@ -64,8 +64,8 @@ RSpec.describe 'links API', type: :request do
       before { post '/links', params: valid_attributes, headers: headers }
 
       it 'creates a link' do
-        expect(JSON.parse(response.body)['slug']).to eq('test')
-        expect(JSON.parse(response.body)['url']).to eq('http://www.google.com')
+        expect(json['slug']).to eq('test')
+        expect(json['url']).to eq('http://www.google.com')
       end
 
       it 'returns status code 201' do
@@ -78,8 +78,8 @@ RSpec.describe 'links API', type: :request do
       before { post '/links', params: valid_attributes, headers: headers }
 
       it 'creates a link with new slug' do
-        expect(JSON.parse(response.body)['slug'][0..3]).to eq('test')
-        expect(JSON.parse(response.body)['url']).to eq('http://www.google.com')
+        expect(json['slug'][0..3]).to eq('test')
+        expect(json['url']).to eq('http://www.google.com')
       end
 
       it 'returns status code 200' do
@@ -96,7 +96,7 @@ RSpec.describe 'links API', type: :request do
       end
 
       it 'returns a validation failure message' do
-        expect(JSON.parse(response.body)['message']).to eq(['url', "can't be blank"])
+        expect(json['message']).to eq(['url', "can't be blank"])
       end
     end
   end
@@ -109,7 +109,7 @@ RSpec.describe 'links API', type: :request do
       before { put "/links/#{link_id}", params: valid_attributes, headers: headers }
 
       it 'updates the record' do
-        expect(JSON.parse(response.body)['url']).to eq('http://www.yahoo.com')
+        expect(json['url']).to eq('http://www.yahoo.com')
       end
 
       it 'returns status code 204' do
@@ -123,7 +123,7 @@ RSpec.describe 'links API', type: :request do
     before { delete "/links/#{link_id}", params: {}, headers: headers }
 
     it 'returns status code 204' do
-      expect(response).to have_http_status(204)
+      expect(response).to have_http_status(200)
     end
   end
 end

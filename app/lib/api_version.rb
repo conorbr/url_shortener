@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class ApiVersion
   attr_reader :version, :default
 
@@ -15,8 +16,8 @@ class ApiVersion
   private
 
   def check_headers(headers)
-    # check version from Accept headers; expect custom media type `todos`
+    # check version from Accept headers; expect custom media type `links`
     accept = headers[:accept]
-    accept&.include?("application/vnd.todos.#{version}+json")
+    accept&.include?("application/vnd.links.#{version}+json")
   end
 end

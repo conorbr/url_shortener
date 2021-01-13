@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'faker'
-
 FactoryBot.define do
   factory :link do
     url { 'http://www.google.com' }
