@@ -96,24 +96,24 @@ RSpec.describe 'links API', type: :request do
       end
 
       it 'returns a validation failure message' do
-        expect(JSON.parse(response.body)['message']).to eq(["url", "can't be blank"])
+        expect(JSON.parse(response.body)['message']).to eq(['url', "can't be blank"])
       end
     end
   end
 
   # Test suite for PUT /links/:id
   describe 'PUT /links/:id' do
-    let(:valid_attributes) { { url: 'yahoo.com' }.to_json }
+    let!(:valid_attributes) { { url: 'www.yahoo.com' } }
 
     context 'when the record exists' do
       before { put "/links/#{link_id}", params: valid_attributes, headers: headers }
 
       it 'updates the record' do
-        expect(response.body).to be_empty
+        expect(JSON.parse(response.body)['url']).to eq('http://www.yahoo.com')
       end
 
       it 'returns status code 204' do
-        expect(response).to have_http_status(204)
+        expect(response).to have_http_status(200)
       end
     end
   end

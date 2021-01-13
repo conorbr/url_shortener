@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   # namespace the controllers without affecting the URI
   scope module: :v1, constraints: ApiVersion.new('v1', true) do
     resources :links
-    get '/s/:slug', to: 'links#show', as: :short
+    resources :redirect
+
+    get '/s/:slug', to: 'redirects#index'
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Link < ApplicationRecord
-  before_save :format_url
+  before_validation :format_url
 
   validates_presence_of :url
   validates_presence_of :slug

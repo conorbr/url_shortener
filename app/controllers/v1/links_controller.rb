@@ -10,8 +10,7 @@ module V1
     end
 
     def show
-      @link.update_attribute(:clicked, @link.clicked + 1)
-      redirect_to @link.url
+      json_response(@link, :ok)
     end
 
     def create
@@ -24,25 +23,29 @@ module V1
     end
 
     def update
-      @link = Link.find(params[:id])
-      @link.update(link_params)
+      @link.update(link_params.except(:slug))
+      @link.update_attribute(:slug, generate_slug(link_params[:slug])) if link_params[:slug]
+
+      return json_response(@link, :ok) if @link.save
+
+      json_response({ message: @link.errors.full_messages }, 422)
     end
 
     def destroy
-      @link.destroy
+      @link.delete
       json_response({ message: Message.deleted_link }, :ok)
     end
 
     private
 
     def set_link
-      @link = link_params[:id] ? Link.find(link_params[:id]) : Link.find_by(slug: link_params[:slug])
+      @link = Link.find(link_params[:id])
 
       json_response({ message: Message.not_found('link') }, :not_found) unless @link.present?
     end
 
     def link_params
-      params.permit(:slug, :url, :link, :id)
+      params.permit(:slug, :url, :id)
     end
 
     def generate_slug(slug_param = nil)
