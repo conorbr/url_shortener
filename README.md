@@ -1,5 +1,5 @@
 
-#### Link shortener
+## Link shortener
 Hi there, this is my link shortner project. I have done a short writeup for
 this project, you can check it out [here](http://breen.ie/link-shortener-part-1/).
 
