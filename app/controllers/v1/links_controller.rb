@@ -2,15 +2,17 @@
 
 module V1
   class LinksController < ApplicationController
+    include ActiveModelSerializers
+
     before_action :set_link, only: %i[show update destroy show]
 
     def index
       @links = Link.all
-      json_response(@links)
+      render json: @links, serialize_each: LinkSerializer
     end
 
     def show
-      json_response(@link, :ok)
+      render json: @link, serialize_each: LinkSerializer
     end
 
     def create

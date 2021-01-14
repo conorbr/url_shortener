@@ -19,4 +19,10 @@ class Link < ApplicationRecord
 
     self.url = "http://#{url}" unless url[%r{\Ahttp://}] || url[%r{\Ahttps://}]
   end
+
+  def short
+    url = Rails.env.development? ? 'localhost:3000/s/' : 'example.com/s/'
+
+    url + slug
+  end
 end
