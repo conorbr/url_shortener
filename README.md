@@ -10,7 +10,7 @@ To setup the project on your own machine follow the steps below
 
 The setups steps expect following tools installed on the system.
 
-- Github
+- Git
 - Ruby [2.6.1](https://www.ruby-lang.org/en/)
 - Rails [6.0.3](https://rubyonrails.org/)
 
